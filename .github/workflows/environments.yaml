@@ -30,8 +30,8 @@ jobs:
     name: NPR
     needs: dev-apply
     if: ${{ github.event_name != 'push' || startsWith(github.ref, 'refs/heads/release/') }}
-    continue-on-error: true
     uses: ./.github/workflows/env-template.yaml
+    continue-on-error: true
     with:
       environment: npr
       step: plan
@@ -50,8 +50,8 @@ jobs:
     name: PRD
     needs: npr-apply
     if: ${{ github.event_name != 'push' || startsWith(github.ref, 'refs/heads/feature/') }}
-    continue-on-error: true
     uses: ./.github/workflows/env-template.yaml
+    continue-on-error: true
     with:
       environment: prd
       step: plan
