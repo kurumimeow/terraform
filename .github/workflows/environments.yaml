@@ -35,7 +35,7 @@ jobs:
   # DEV
   dev-plan:
     name: DEV
-    needs: ${{ github.event.inputs.skip_dev != 'true' }}
+    needs: ${{ inputs.skip_dev != 'true' }}
     if: ${{ github.event_name != 'push' || startsWith(github.ref, 'refs/heads/feature/') }}
     uses: ./.github/workflows/env-template.yaml
     with:
@@ -54,7 +54,7 @@ jobs:
   # NPR
   npr-plan:
     name: NPR
-    needs: ${{ github.event.inputs.skip_npr != 'true' }}
+    needs: ${{ inputs.skip_npr != 'true' }}
     if: ${{ github.event_name != 'push' || startsWith(github.ref, 'refs/heads/feature/') }}
     uses: ./.github/workflows/env-template.yaml
     with:
@@ -73,7 +73,7 @@ jobs:
   # PRD
   prd-plan:
     name: PRD
-    needs: ${{ github.event.inputs.skip_prd != 'true' }}
+    needs: ${{ inputs.skip_prd != 'true' }}
     if: ${{ github.event_name != 'push' || startsWith(github.ref, 'refs/heads/feature/') }}
     uses: ./.github/workflows/env-template.yaml
     with:
