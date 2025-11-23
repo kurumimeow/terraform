@@ -1,0 +1,24 @@
+name: Main Environment Pipeline
+
+on:
+  push:
+    branches:
+      - main
+      - feature/*
+  workflow_dispatch:
+
+jobs:
+  deploy-dev:
+    uses: ./.github/workflows/env-template.yml
+    with:
+      environment: dev
+
+  deploy-npr:
+    uses: ./.github/workflows/env-template.yml
+    with:
+      environment: npr
+
+  deploy-prd:
+    uses: ./.github/workflows/env-template.yml
+    with:
+      environment: prd

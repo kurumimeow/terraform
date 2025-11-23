@@ -1,0 +1,17 @@
+name: Environment Template
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        required: true
+        type: string
+
+jobs:
+  debug:
+    name: Debug ${{ inputs.environment }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Echo
+        run: echo "Environment: ${{ inputs.environment }}"
