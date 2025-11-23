@@ -14,11 +14,13 @@ jobs:
       environment: dev
 
   deploy-npr:
+    needs: deploy-dev
     uses: ./.github/workflows/env-template.yaml
     with:
       environment: npr
 
   deploy-prd:
+    needs: deploy-npr
     uses: ./.github/workflows/env-template.yaml
     with:
       environment: prd
