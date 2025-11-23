@@ -8,19 +8,46 @@ on:
   workflow_dispatch:
 
 jobs:
-  deploy-dev:
+  # DEV
+  dev-plan:
     uses: ./.github/workflows/env-template.yaml
     with:
       environment: dev
+      step: plan
 
-  deploy-npr:
-    needs: deploy-dev
+  dev-apply:
+    needs: dev-plan
+    uses: ./.github/workflows/env-template.yaml
+    with:
+      environment: dev
+      step: apply
+
+  # NPR
+  npr-plan:
+    needs: dev-apply
     uses: ./.github/workflows/env-template.yaml
     with:
       environment: npr
+      step: plan
 
-  deploy-prd:
-    needs: deploy-npr
+  npr-apply:
+    needs: npr-plan
+    uses: ./.github/workflows/env-template.yaml
+    with:
+      environment: npr
+      step: apply
+
+  # PRD
+  prd-plan:
+    needs: npr-apply
     uses: ./.github/workflows/env-template.yaml
     with:
       environment: prd
+      step: plan
+
+  prd-apply:
+    needs: prd-plan
+    uses: ./.github/workflows/env-template.yaml
+    with:
+      environment: prd
+      step: apply

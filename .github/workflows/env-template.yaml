@@ -6,12 +6,18 @@ on:
       environment:
         required: true
         type: string
+      step:
+        required: true
+        type: string
 
 jobs:
   debug:
-    name: Debug ${{ inputs.environment }}
+    name: ${{ inputs.environment }} - ${{ inputs.step }}
     runs-on: ubuntu-latest
 
     steps:
-      - name: Echo
-        run: "echo 'Environment: ${{ inputs.environment }}'"
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Echo step
+        run: 'echo "Environment: ${{ inputs.environment }}, Step: ${{ inputs.step }}"'
