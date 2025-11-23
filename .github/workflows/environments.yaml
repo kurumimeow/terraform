@@ -5,31 +5,6 @@ on:
     branches:
       - feature/*
   workflow_dispatch:
-    inputs:
-      skip_dev:
-        description: 'Skip DEV Environment'
-        required: false
-        default: 'false'
-        type: choice
-        options:
-          - 'true'
-          - 'false'
-      skip_npr:
-        description: 'Skip NPR Environment'
-        required: false
-        default: 'true'
-        type: choice
-        options:
-          - 'true'
-          - 'false'
-      skip_prd:
-        description: 'Skip PRD Environment'
-        required: false
-        default: 'false'
-        type: choice
-        options:
-          - 'true'
-          - 'false'
 
 jobs:
   # DEV
@@ -40,7 +15,6 @@ jobs:
     with:
       environment: dev
       step: plan
-    if: ${{ inputs.skip_dev != 'true' }}
 
   dev-apply:
     name: DEV
@@ -54,13 +28,12 @@ jobs:
   # NPR
   npr-plan:
     name: NPR
-    needs: dev-apply
+    needs: dev_plan || dev-apply
     if: ${{ github.event_name != 'push' || startsWith(github.ref, 'refs/heads/feature/') }}
     uses: ./.github/workflows/env-template.yaml
     with:
       environment: npr
       step: apply
-    if: ${{ inputs.skip_npr != 'true' }}
 
   npr-apply:
     name: NPR
@@ -74,13 +47,12 @@ jobs:
   # PRD
   prd-plan:
     name: PRD
-    needs: npr-apply
+    needs: npr-plan || npr-apply
     if: ${{ github.event_name != 'push' || startsWith(github.ref, 'refs/heads/feature/') }}
     uses: ./.github/workflows/env-template.yaml
     with:
       environment: prd
       step: plan
-    if: ${{ inputs.skip_prd != 'true' }}
 
   prd-apply:
     name: PRD
