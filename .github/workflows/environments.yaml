@@ -9,16 +9,16 @@ on:
 
 jobs:
   deploy-dev:
-    uses: ./.github/workflows/templates/env-template.yaml
+    uses: ./.github/workflows/env-template.yaml
     with:
       environment: dev
 
   deploy-npr:
-    uses: ./.github/workflows/templates/env-template.yaml
+    uses: ./.github/workflows/env-template.yaml
     with:
       environment: npr
 
   deploy-prd:
-    uses: ./.github/workflows/templates/env-template.yaml
+    uses: ./.github/workflows/env-template.yaml
     with:
       environment: prd
