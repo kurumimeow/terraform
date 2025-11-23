@@ -33,7 +33,7 @@ jobs:
     uses: ./.github/workflows/env-template.yaml
     with:
       environment: npr
-      step: apply
+      step: plan
 
   npr-apply:
     name: NPR
