@@ -28,7 +28,7 @@ jobs:
   # NPR
   npr-plan:
     name: NPR
-    needs: dev-plan
+    needs: dev-plan || dev-apply
     if: ${{ github.event_name != 'push' || startsWith(github.ref, 'refs/heads/feature/') }}
     uses: ./.github/workflows/env-template.yaml
     with:
@@ -47,7 +47,7 @@ jobs:
   # PRD
   prd-plan:
     name: PRD
-    needs: npr-plan
+    needs: npr-plan || npr-apply
     if: ${{ github.event_name != 'push' || startsWith(github.ref, 'refs/heads/feature/') }}
     uses: ./.github/workflows/env-template.yaml
     with:
