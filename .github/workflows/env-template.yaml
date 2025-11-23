@@ -14,4 +14,4 @@ jobs:
 
     steps:
       - name: Echo
-        run: echo "Environment: ${{ inputs.environment }}"
+        run: "echo 'Environment: ${{ inputs.environment }}'"
