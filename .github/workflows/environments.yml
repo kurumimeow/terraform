@@ -1,0 +1,29 @@
+name: Environment Debug Pipeline
+
+on:
+  push:
+    branches:
+      - main
+      - feature/*
+  workflow_dispatch:
+
+jobs:
+  debug:
+    name: Debug ${{ matrix.environment }} environment
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        environment: [dev, npr, prd]
+
+    environment: ${{ matrix.environment }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Print environment info
+        run: echo "Running in ${{ matrix.environment }} environment"
+
+      - name: Additional debug step
+        run: echo "This is a debug step for ${{ matrix.environment }}"
