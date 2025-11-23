@@ -17,7 +17,7 @@ on:
       skip_npr:
         description: 'Skip NPR Environment'
         required: false
-        default: 'false'
+        default: 'true'
         type: choice
         options:
           - 'true'
@@ -35,12 +35,12 @@ jobs:
   # DEV
   dev-plan:
     name: DEV
-    needs: ${{ inputs.skip_dev != 'true' }}
     if: ${{ github.event_name != 'push' || startsWith(github.ref, 'refs/heads/feature/') }}
     uses: ./.github/workflows/env-template.yaml
     with:
       environment: dev
       step: plan
+    if: ${{ inputs.skip_dev != 'true' }}
 
   dev-apply:
     name: DEV
@@ -54,12 +54,13 @@ jobs:
   # NPR
   npr-plan:
     name: NPR
-    needs: ${{ inputs.skip_npr != 'true' }}
+    needs: dev-apply
     if: ${{ github.event_name != 'push' || startsWith(github.ref, 'refs/heads/feature/') }}
     uses: ./.github/workflows/env-template.yaml
     with:
       environment: npr
       step: apply
+    if: ${{ inputs.skip_npr != 'true' }}
 
   npr-apply:
     name: NPR
@@ -73,12 +74,13 @@ jobs:
   # PRD
   prd-plan:
     name: PRD
-    needs: ${{ inputs.skip_prd != 'true' }}
+    needs: npr-apply
     if: ${{ github.event_name != 'push' || startsWith(github.ref, 'refs/heads/feature/') }}
     uses: ./.github/workflows/env-template.yaml
     with:
       environment: prd
       step: plan
+    if: ${{ inputs.skip_prd != 'true' }}
 
   prd-apply:
     name: PRD
