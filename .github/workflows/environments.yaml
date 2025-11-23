@@ -5,11 +5,37 @@ on:
     branches:
       - feature/*
   workflow_dispatch:
+    inputs:
+      skip_dev:
+        description: 'Skip DEV Environment'
+        required: false
+        default: 'false'
+        type: choice
+        options:
+          - 'true'
+          - 'false'
+      skip_npr:
+        description: 'Skip NPR Environment'
+        required: false
+        default: 'false'
+        type: choice
+        options:
+          - 'true'
+          - 'false'
+      skip_prd:
+        description: 'Skip PRD Environment'
+        required: false
+        default: 'false'
+        type: choice
+        options:
+          - 'true'
+          - 'false'
 
 jobs:
   # DEV
   dev-plan:
     name: DEV
+    needs: ${{ github.event.inputs.skip_dev != 'true' }}
     if: ${{ github.event_name != 'push' || startsWith(github.ref, 'refs/heads/feature/') }}
     uses: ./.github/workflows/env-template.yaml
     with:
@@ -28,18 +54,17 @@ jobs:
   # NPR
   npr-plan:
     name: NPR
-    needs: dev-apply
-    if: ${{ github.event_name != 'push' || startsWith(github.ref, 'refs/heads/release/') }}
+    needs: ${{ github.event.inputs.skip_npr != 'true' }}
+    if: ${{ github.event_name != 'push' || startsWith(github.ref, 'refs/heads/feature/') }}
     uses: ./.github/workflows/env-template.yaml
     with:
       environment: npr
-      step: 
-    continue-on-error: true
+      step: apply
 
   npr-apply:
     name: NPR
     needs: npr-plan
-    if: ${{ github.event_name != 'push' || startsWith(github.ref, 'refs/heads/release/') }}
+    if: ${{ github.event_name != 'push' || startsWith(github.ref, 'refs/heads/feature/') }}
     uses: ./.github/workflows/env-template.yaml
     with:
       environment: npr
@@ -48,13 +73,12 @@ jobs:
   # PRD
   prd-plan:
     name: PRD
-    needs: npr-apply
+    needs: ${{ github.event.inputs.skip_prd != 'true' }}
     if: ${{ github.event_name != 'push' || startsWith(github.ref, 'refs/heads/feature/') }}
     uses: ./.github/workflows/env-template.yaml
     with:
       environment: prd
       step: plan
-    continue-on-error: true
 
   prd-apply:
     name: PRD
