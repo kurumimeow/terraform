@@ -10,12 +10,14 @@ on:
 jobs:
   # DEV
   dev-plan:
+    name: DEV
     uses: ./.github/workflows/env-template.yaml
     with:
       environment: dev
       step: plan
 
   dev-apply:
+    name: DEV
     needs: dev-plan
     uses: ./.github/workflows/env-template.yaml
     with:
@@ -24,6 +26,7 @@ jobs:
 
   # NPR
   npr-plan:
+    name: NPR
     needs: dev-apply
     uses: ./.github/workflows/env-template.yaml
     with:
@@ -31,6 +34,7 @@ jobs:
       step: plan
 
   npr-apply:
+    name: NPR
     needs: npr-plan
     uses: ./.github/workflows/env-template.yaml
     with:
@@ -39,6 +43,7 @@ jobs:
 
   # PRD
   prd-plan:
+    name: PRD
     needs: npr-apply
     uses: ./.github/workflows/env-template.yaml
     with:
@@ -46,6 +51,7 @@ jobs:
       step: plan
 
   prd-apply:
+    name: PRD
     needs: prd-plan
     uses: ./.github/workflows/env-template.yaml
     with:

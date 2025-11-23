@@ -11,8 +11,8 @@ on:
         type: string
 
 jobs:
-  debug:
-    name: ${{ inputs.environment }} - ${{ inputs.step }}
+  my-job:
+    name: ${{ inputs.step }}
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
 
