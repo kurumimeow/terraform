@@ -26,5 +26,5 @@ jobs:
       - name: Echo apply step
         if: ${{ inputs.step == 'apply' }}
         run: |
-          'echo "Applied changes on Environment: ${{ inputs.environment }}, Step: ${{ inputs.step }}"'
+          echo "Applied changes on Environment: ${{ inputs.environment }}, Step: ${{ inputs.step }}"
         
