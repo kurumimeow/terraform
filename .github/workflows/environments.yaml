@@ -3,7 +3,6 @@ name: Main Environment Pipeline
 on:
   push:
     branches:
-      - main
       - feature/*
   workflow_dispatch:
 
@@ -11,6 +10,7 @@ jobs:
   # DEV
   dev-plan:
     name: DEV
+    if: ${{ github.event_name != 'push' || startsWith(github.ref, 'refs/heads/feature/') }}
     uses: ./.github/workflows/env-template.yaml
     with:
       environment: dev
@@ -19,6 +19,7 @@ jobs:
   dev-apply:
     name: DEV
     needs: dev-plan
+    if: ${{ github.event_name != 'push' || startsWith(github.ref, 'refs/heads/feature/') }}
     uses: ./.github/workflows/env-template.yaml
     with:
       environment: dev
@@ -28,6 +29,7 @@ jobs:
   npr-plan:
     name: NPR
     needs: dev-apply
+    if: ${{ github.event_name != 'push' || startsWith(github.ref, 'refs/heads/feature/') }}
     uses: ./.github/workflows/env-template.yaml
     with:
       environment: npr
@@ -36,6 +38,7 @@ jobs:
   npr-apply:
     name: NPR
     needs: npr-plan
+    if: ${{ github.event_name != 'push' || startsWith(github.ref, 'refs/heads/feature/') }}
     uses: ./.github/workflows/env-template.yaml
     with:
       environment: npr
@@ -45,6 +48,7 @@ jobs:
   prd-plan:
     name: PRD
     needs: npr-apply
+    if: ${{ github.event_name != 'push' || startsWith(github.ref, 'refs/heads/feature/') }}
     uses: ./.github/workflows/env-template.yaml
     with:
       environment: prd
@@ -53,6 +57,7 @@ jobs:
   prd-apply:
     name: PRD
     needs: prd-plan
+    if: ${{ github.event_name != 'push' || startsWith(github.ref, 'refs/heads/feature/') }}
     uses: ./.github/workflows/env-template.yaml
     with:
       environment: prd
